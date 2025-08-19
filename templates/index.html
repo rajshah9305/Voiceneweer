@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Playground AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Voice Playground AI</h1>
+        <p>Record or upload an audio file, select a voice, and hear the magic.</p>
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="audio-file">Upload Audio File:</label>
+                <input type="file" id="audio-file" name="audio_file" accept="audio/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="voice-select">Choose a Voice:</label>
+                <select id="voice-select" name="voice_id" required>
+                    <option value="" disabled selected>Select a voice</option>
+                    {% for voice in voices %}
+                        <option value="{{ voice.voice_id }}">{{ voice.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Convert Voice</button>
+        </form>
+
+        <div id="status-container" class="hidden">
+            <div class="loader"></div>
+            <p id="status-message">Processing your request...</p>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h2>Result</h2>
+            <audio id="result-audio" controls></audio>
+            <a id="download-link" href="#" download>Download Converted Audio</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</body>
+</html>
+
